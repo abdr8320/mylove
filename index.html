@@ -11,6 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        html {
+            scroll-behavior: auto;
+        }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
@@ -20,16 +23,74 @@
         /* Efek fade in lembut saat scroll */
         .fade-in {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
+            transform: translateY(40px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out;
         }
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Splash screen overlay */
+        #splash {
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #splash.hidden-splash {
+            opacity: 0;
+            visibility: hidden;
+        }
+        #openBtn {
+            animation: pulse-soft 2s infinite;
+        }
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(244, 63, 94, 0); }
+        }
+        .heart {
+            position: absolute;
+            font-size: 1.2rem;
+            animation: float-up 4s ease-in infinite;
+            opacity: 0;
+        }
+        @keyframes float-up {
+            0% { transform: translateY(0) scale(1); opacity: 0.8; }
+            100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+        }
+
+        /* Confetti */
+        .confetti-piece {
+            position: fixed;
+            top: -20px;
+            pointer-events: none;
+            z-index: 99999;
+            animation: confetti-fall linear forwards;
+        }
+        @keyframes confetti-fall {
+            0%   { transform: translateY(0)     rotateZ(0deg)   rotateX(0deg);   opacity: 1; }
+            80%  { opacity: 1; }
+            100% { transform: translateY(105vh) rotateZ(720deg) rotateX(360deg); opacity: 0; }
+        }
     </style>
 </head>
 <body class="bg-gradient-to-b from-rose-50 to-amber-50 text-stone-800 min-h-screen antialiased">
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-rose-400 via-pink-500 to-rose-600 text-white text-center px-6">
+        <!-- Floating hearts dekorasi -->
+        <span class="heart" style="left:10%;animation-delay:0s;">❤️</span>
+        <span class="heart" style="left:25%;animation-delay:0.8s;">🌸</span>
+        <span class="heart" style="left:50%;animation-delay:1.5s;">❤️</span>
+        <span class="heart" style="left:70%;animation-delay:0.4s;">🌹</span>
+        <span class="heart" style="left:85%;animation-delay:1.2s;">❤️</span>
+
+        <p class="text-sm font-semibold tracking-widest uppercase text-rose-100 mb-3">Khusus Untukmu</p>
+        <h1 class="font-romantic text-5xl md:text-7xl drop-shadow-lg mb-3">Ada Hadiah Untukmu</h1>
+        <p class="text-rose-100 text-base md:text-lg max-w-xs mb-10">Tap tombol di bawah untuk membuka kejutan spesial dari aku...</p>
+
+        <button id="openBtn" class="bg-white text-rose-500 font-bold text-lg px-10 py-4 rounded-full shadow-2xl hover:bg-rose-50 transition cursor-pointer">
+            Buka Hadiahku 🎁
+        </button>
+    </div>
 
     <!-- 1. HERO SECTION & MUSIC PLAYER -->
     <header class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
@@ -61,28 +122,129 @@
         </div>
     </header>
 
-    <!-- 2. MEMORY LANE (GALERI FOTO MINI) -->
-    <section id="memory-lane" class="fade-in max-w-5xl mx-auto px-4 py-20">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-stone-800">Moments We Shared</h2>
-            <p class="text-stone-500 mt-2">Kumpulan memori manis yang selalu bikin aku bersyukur ada di sampingmu.</p>
-        </div>
+    <!-- 2. THE JOURNEY OF MY LIFE (UPGRADED TIMELINE) -->
+    <section id="memory-lane" class="py-24 bg-gradient-to-b from-rose-50/50 to-white overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4">
+            
+            <div class="text-center mb-20">
+                <h2 class="text-4xl font-bold text-stone-800 tracking-tight">The Beautiful Journey of You</h2>
+                <p class="text-rose-500 font-romantic text-2xl mt-2">Melihat kembali setiap langkah yang membawamu ke pelukanku.</p>
+            </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Foto 1 -->
-            <div class="bg-white p-4 pb-8 shadow-xl rounded-sm transform -rotate-2 hover:rotate-0 transition duration-300 border border-stone-100">
-                <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=500" alt="Memory 1" class="w-full h-64 object-cover filter grayscale hover:grayscale-0 transition duration-500">
-                <p class="font-romantic text-2xl text-center text-rose-600 mt-4">Saat pertama kali kita...</p>
-            </div>
-            <!-- Foto 2 -->
-            <div class="bg-white p-4 pb-8 shadow-xl rounded-sm transform rotate-3 hover:rotate-0 transition duration-300 border border-stone-100">
-                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500" alt="Memory 2" class="w-full h-64 object-cover filter grayscale hover:grayscale-0 transition duration-500">
-                <p class="font-romantic text-2xl text-center text-rose-600 mt-4">Senyum favoritku</p>
-            </div>
-            <!-- Foto 3 -->
-            <div class="bg-white p-4 pb-8 shadow-xl rounded-sm transform -rotate-1 hover:rotate-0 transition duration-300 border border-stone-100">
-                <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=500" alt="Memory 3" class="w-full h-64 object-cover filter grayscale hover:grayscale-0 transition duration-500">
-                <p class="font-romantic text-2xl text-center text-rose-600 mt-4">Petualangan kita waktu itu</p>
+            <!-- Garis Tengah Timeline (Desktop) -->
+            <div class="relative border-l-2 border-rose-200 md:border-l-0 md:before:content-[''] md:before:absolute md:before:left-1/2 md:before:top-0 md:before:bottom-0 md:before:w-0.5 md:before:bg-rose-200">
+                
+                <!-- BABAK 1: MASA KECIL -->
+                <div class="mb-16 md:mb-24 flex flex-col md:flex-row items-start md:justify-between relative pl-8 md:pl-0 fade-in">
+                    <!-- Titik Penanda di Garis Tengah -->
+                    <div class="absolute left-[-5px] md:left-1/2 md:-ml-1.5 top-1.5 w-3 h-3 rounded-full bg-rose-400 ring-4 ring-rose-50"></div>
+                    
+                    <!-- Konten Kiri -->
+                    <div class="w-full md:w-[45%] md:text-right order-2 md:order-1">
+                        <span class="inline-block px-3 py-1 bg-amber-100 text-amber-700 font-bold text-xs rounded-full uppercase tracking-wider mb-2">Where It All Began</span>
+                        <h3 class="text-2xl font-bold text-stone-800">Awal Cerita Indahmu</h3>
+                        <p class="text-stone-500 text-sm mt-1 mb-4 leading-relaxed">Jauh sebelum aku mengenalmu, dunia sudah ditenangkan oleh senyum kecil ini. Terima kasih telah tumbuh dengan jiwa yang begitu tulus sejak langkah pertama yang kamu ambil di dunia.</p>
+                    </div>
+                    <!-- Foto Kanan -->
+                    <div class="w-full md:w-[45%] order-1 md:order-2 mb-4 md:mb-0">
+                        <div class="bg-white p-3 shadow-lg rounded-xl border border-stone-100 transform md:rotate-2 hover:rotate-0 transition">
+                            <img src="images/bayi1.jpeg" alt="Masa Kecil" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/bayi2.jpeg" alt="Masa Kecil" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/bayi3.jpeg" alt="Masa Kecil" class="w-full rounded-lg mb-2 last:mb-0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BABAK 2: MASA SEKOLAH / REMAJA -->
+                <div class="mb-16 md:mb-24 flex flex-col md:flex-row items-start md:justify-between relative pl-8 md:pl-0 fade-in">
+                    <div class="absolute left-[-5px] md:left-1/2 md:-ml-1.5 top-1.5 w-3 h-3 rounded-full bg-rose-400 ring-4 ring-rose-50"></div>
+                    
+                    <!-- Foto Kiri -->
+                    <div class="w-full md:w-[45%] mb-4 md:mb-0">
+                        <div class="bg-white p-3 shadow-lg rounded-xl border border-stone-100 transform md:-rotate-2 hover:rotate-0 transition">
+                            <img src="images/sekolah1.jpeg" alt="Masa Remaja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/sekolah2.jpeg" alt="Masa Remaja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/sekolah3.jpeg" alt="Masa Remaja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/sekolah4.jpeg" alt="Masa Remaja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/sekolah5.jpeg" alt="Masa Remaja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/sekolah6.jpeg" alt="Masa Remaja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/sekolah7.jpeg" alt="Masa Remaja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/sekolah8.jpeg" alt="Masa Remaja" class="w-full rounded-lg mb-2 last:mb-0">
+                        </div>
+                    </div>
+                    <!-- Konten Kanan -->
+                    <div class="w-full md:w-[45%]">
+                        <span class="inline-block px-3 py-1 bg-blue-100 text-blue-700 font-bold text-xs rounded-full uppercase tracking-wider mb-2">Blossoming</span>
+                        <h3 class="text-2xl font-bold text-stone-800">Menemukan Jati Diri</h3>
+                        <p class="text-stone-500 text-sm mt-1 leading-relaxed">Masa-masa penuh tawa bareng sahabat, seragam sekolah, dan mimpi-mimpi yang mulai digantungkan di langit. Bahkan dari foto-foto ini, aku bisa lihat tekad dari sosok hebat yang nantinya akan jadi pendamping hidupku.</p>
+                    </div>
+                </div>
+
+                <!-- BABAK 3: KERJA -->
+                <div class="mb-16 md:mb-24 flex flex-col md:flex-row items-start md:justify-between relative pl-8 md:pl-0 fade-in">
+                    <div class="absolute left-[-5px] md:left-1/2 md:-ml-1.5 top-1.5 w-3 h-3 rounded-full bg-rose-400 ring-4 ring-rose-50"></div>
+                    
+                    <!-- Konten Kiri -->
+                    <div class="w-full md:w-[45%] md:text-right order-2 md:order-1">
+                        <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 font-bold text-xs rounded-full uppercase tracking-wider mb-2">Independent & Strong</span>
+                        <h3 class="text-2xl font-bold text-stone-800">Mandiri dan Berkilau</h3>
+                        <p class="text-stone-500 text-sm mt-1 mb-4 leading-relaxed">Fase di mana kamu membuktikan pada dunia betapa cerdas dan tangguhnya kamu. Berjuang meniti karier, menghadapi dunia kerja yang keras, tapi tetap mempertahankan kehangatan di hatimu. Aku selalu kagum melihat dedikasimu.</p>
+                    </div>
+                    <!-- Foto Kanan -->
+                    <div class="w-full md:w-[45%] order-1 md:order-2 mb-4 md:mb-0">
+                        <div class="bg-white p-3 shadow-lg rounded-xl border border-stone-100 transform md:rotate-3 hover:rotate-0 transition">
+                            <img src="images/kerja1.jpeg" alt="Masa Kuliah/Kerja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/kerja2.jpeg" alt="Masa Kuliah/Kerja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/kerja3.jpeg" alt="Masa Kuliah/Kerja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/kerja4.jpeg" alt="Masa Kuliah/Kerja" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/kerja5.jpeg" alt="Masa Kuliah/Kerja" class="w-full rounded-lg mb-2 last:mb-0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BABAK 4: PERNIKAHAN -->
+                <div class="mb-16 md:mb-24 flex flex-col md:flex-row items-start md:justify-between relative pl-8 md:pl-0 fade-in">
+                    <div class="absolute left-[-5px] md:left-1/2 md:-ml-1.5 top-1.5 w-3 h-3 rounded-full bg-rose-400 ring-4 ring-rose-50"></div>
+                    
+                    <!-- Foto Kiri -->
+                    <div class="w-full md:w-[45%] mb-4 md:mb-0">
+                        <div class="bg-white p-3 shadow-lg rounded-xl border border-rose-100 transform md:-rotate-1 hover:rotate-0 transition">
+                            <img src="images/pernikahan1.jpeg" alt="Pernikahan" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/pernikahan2.jpeg" alt="Pernikahan" class="w-full rounded-lg mb-2 last:mb-0">
+                        </div>
+                    </div>
+                    <!-- Konten Kanan -->
+                    <div class="w-full md:w-[45%]">
+                        <span class="inline-block px-3 py-1 bg-rose-100 text-rose-700 font-bold text-xs rounded-full uppercase tracking-wider mb-2">Two Paths Become One</span>
+                        <h3 class="text-2xl font-bold text-stone-800">Hari Terbaik dalam Hidupku</h3>
+                        <p class="text-stone-500 text-sm mt-1 leading-relaxed">Momen di mana seluruh alam semesta sepakat untuk menyatukan takdir kita. Momen ketika hati ini berjanji bahwa aku akan memberikan yang terbaik kepadamu. Seketika itu juga aku tahu, seluruh pencarianku telah selesai.</p>
+                    </div>
+                </div>
+
+                <!-- BABAK 5: SAAT INI -->
+                <div class="flex flex-col md:flex-row items-start md:justify-between relative pl-8 md:pl-0 fade-in">
+                    <div class="absolute left-[-5px] md:left-1/2 md:-ml-1.5 top-1.5 w-3 h-3 rounded-full bg-rose-500 ring-4 ring-rose-100 animate-ping"></div>
+                    
+                    <!-- Konten Kiri -->
+                    <div class="w-full md:w-[45%] md:text-right order-2 md:order-1">
+                        <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 font-bold text-xs rounded-full uppercase tracking-wider mb-2">Our Beautiful Everyday</span>
+                        <h3 class="text-2xl font-bold text-stone-800">Menua Bersamamu</h3>
+                        <p class="text-stone-500 text-sm mt-1 mb-4 leading-relaxed">Dan di sinilah kita sekarang. Menikmati kopi bersama, bertukar cerita konyol, dan melewati badai maupun pelangi bergandengan tangan. Di usiamu yang baru ini, tugasku cuma satu: memastikan wanita hebat di foto-foto ini selalu merasa dicintai setiap hari.</p>
+                    </div>
+                    <!-- Foto Kanan -->
+                    <div class="w-full md:w-[45%] order-1 md:order-2 mb-4 md:mb-0">
+                        <div class="bg-white p-3 shadow-xl rounded-xl border-2 border-rose-200 transform md:rotate-1 hover:rotate-0 transition duration-300">
+                            <img src="images/saatini1.jpeg" alt="Bersama" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/saatini2.jpeg" alt="Bersama" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/saatini3.jpeg" alt="Bersama" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/saatini4.jpeg" alt="Bersama" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/saatini5.jpeg" alt="Bersama" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/saatini6.jpeg" alt="Bersama" class="w-full rounded-lg mb-2 last:mb-0">
+                            <img src="images/saatini7.jpeg" alt="Bersama" class="w-full rounded-lg mb-2 last:mb-0">
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -96,20 +258,26 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                <!-- Note 1: Dari Lo (Suami) -->
+                <!-- Note 1: Dari Orang Tua -->
                 <div class="bg-amber-100 p-6 shadow-md transform -rotate-1 hover:scale-105 transition duration-300 border-l-4 border-amber-400">
-                    <p class="text-xs text-stone-400 font-semibold mb-2">FROM: HUBBY ❤️</p>
-                    <p class="text-stone-700 italic text-sm">"Selamat ulang tahun, istriku tercinta. Terima kasih sudah menjadi teman hidup, sahabat, dan koki terbaik di dunia. Semoga tahun ini penuh berkah buat kamu!"</p>
+                    <p class="text-xs text-stone-400 font-semibold mb-2">FROM: FIRDA</p>
+                    <p class="text-stone-700 italic text-sm">
+                        "Selamat ulang tahun untuk mbafii kakaku tersayang.
+                        <br>
+                        <br>
+                        Happy birthday, saengil chukae hamnida Mbafii! 🎉 Selamat tambah tahun. Allah berikan kesehatan, umur yang berkah, rezeki yang makin lancar, semua urusan dimudahkan, dan setiap doa baiknya pelan-pelan dikabulkan. Makasih ya udah selalu jadi Kakak terbaik buat aku, semoga tetap sabar ngadepin aku yang cantik dan baik hati ini. Oh iya, semoga traktirannya juga makin dewasa ya.  Asyik asyikk😄🎂"
+                    </p>
                 </div>
-                <!-- Note 2: Dari Sahabat / Keluarga -->
+                <!-- Note 2: Dari Mertua -->
                 <div class="bg-rose-100 p-6 shadow-md transform rotate-2 hover:scale-105 transition duration-300 border-l-4 border-rose-400">
-                    <p class="text-xs text-stone-400 font-semibold mb-2">FROM: MAMA & PAPA ✨</p>
-                    <p class="text-stone-700 italic text-sm">"Selamat ulang tahun anakku sayang. Sehat selalu, panjang umur, dan bahagia terus ya sama suami. Doa terbaik dari rumah selalu menyertaimu."</p>
+                    <p class="text-xs text-stone-400 font-semibold mb-2">FROM: -</p>
+                    <p class="text-stone-700 italic text-sm">"-"</p>
                 </div>
                 <!-- Note 3: Dari Sahabat / Teman Kerja -->
                 <div class="bg-blue-100 p-6 shadow-md transform -rotate-2 hover:scale-105 transition duration-300 border-l-4 border-blue-400">
-                    <p class="text-xs text-stone-400 font-semibold mb-2">FROM: BESTIE 👭</p>
-                    <p class="text-stone-700 italic text-sm">"HBD sayaaang! Duh makin berumur makin glowing aja nih rahasianya apa sih? Bahagia terus ya sama keluarga kecilmu, ditunggu traktiran kopinya!"</p>
+                    <p class="text-xs text-stone-400 font-semibold mb-2">FROM: -</p>
+                    <p class="text-stone-700 italic text-sm">"-"
+                    </p>
                 </div>
             </div>
         </div>
@@ -124,9 +292,9 @@
 
             <h2 class="font-romantic text-4xl text-rose-600 mb-6">A Letter to My Universe</h2>
             <div class="text-stone-600 space-y-4 text-sm md:text-base leading-relaxed text-left max-w-xl mx-auto">
-                <p>Hai Sayang,</p>
-                <p>Nggak kerasa satu tahun lagi sudah terlewati. Di umurmu yang baru ini, doaku nggak muluk-muluk. Aku cuma ingin kamu selalu sehat, selalu merasa dicintai, dan nggak pernah ragu kalau aku akan selalu ada di baris paling depan buat dukung semua mimpimu.</p>
-                <p>Terima kasih sudah sabar menghadapi aku, terima kasih buat semua tawa dan kehangatan yang kamu bawa ke dalam rumah kita. Selamat ulang tahun, *my forever person*.</p>
+                <p>Hai Ayangcute ku,</p>
+                <p>Nggak kerasa kamu udah nambah satu tahun lagi. Di umurmu yang baru ini, doaku nggak muluk-muluk. Aku cuma ingin kamu selalu sehat, umurmu diberkahi oleh Allah, panjang umur, selalu merasa dicintai, dan nggak pernah ragu kalau aku akan selalu ada di baris paling depan buat dukung semua mimpimu.</p>
+                <p>Terima kasih sudah sabar menghadapi aku, terima kasih buat semua tawa dan kehangatan yang kamu bawa. Selamat ulang tahun, *my forever person*.</p>
                 <p class="text-right font-romantic text-2xl text-rose-600 mt-6">- Suamimu yang paling beruntung</p>
             </div>
         </div>
@@ -144,19 +312,85 @@
         const bgMusic = document.getElementById('bgMusic');
         const playIcon = document.getElementById('playIcon');
 
+        const pauseIconSVG = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />`;
+        const playIconSVG = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />`;
+
+        // Confetti launcher
+        function launchConfetti() {
+            const colors = ['#f43f5e','#fb7185','#fbbf24','#f9a8d4','#ffffff','#fde68a','#a78bfa','#34d399'];
+            const totalPieces = 180;
+
+            for (let i = 0; i < totalPieces; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+
+                const size = Math.random() * 8 + 6;
+                const isRect = Math.random() > 0.5;
+                piece.style.cssText = `
+                    left: ${Math.random() * 100}vw;
+                    width: ${isRect ? size * 0.5 : size}px;
+                    height: ${size}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    border-radius: ${isRect ? '2px' : '50%'};
+                    animation-duration: ${Math.random() * 2 + 2.5}s;
+                    animation-delay: ${Math.random() * 0.8}s;
+                `;
+                document.body.appendChild(piece);
+                piece.addEventListener('animationend', () => piece.remove());
+            }
+        }
+
+        // Splash screen: klik tombol → confetti + tutup overlay + play musik
+        const splash = document.getElementById('splash');
+        const openBtn = document.getElementById('openBtn');
+
+        openBtn.addEventListener('click', () => {
+            launchConfetti();
+            setTimeout(() => splash.classList.add('hidden-splash'), 300);
+            bgMusic.play();
+            playIcon.innerHTML = pauseIconSVG;
+        });
+
+        // Tombol play/pause di floating player
         musicBtn.addEventListener('click', () => {
             if (bgMusic.paused) {
                 bgMusic.play();
-                // Ubah icon ke PAUSE
-                playIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />`;
+                playIcon.innerHTML = pauseIconSVG;
             } else {
                 bgMusic.pause();
-                // Ubah icon ke PLAY
-                playIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />`;
+                playIcon.innerHTML = playIconSVG;
             }
         });
 
-        // 2. Logika Efek Fade In pas di-Scroll
+        // 2. Smooth scroll pelan untuk anchor link
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (!target) return;
+                e.preventDefault();
+
+                const start = window.scrollY;
+                const end = target.getBoundingClientRect().top + window.scrollY;
+                const distance = end - start;
+                const duration = 2000; // ms — naikkan untuk lebih pelan
+                let startTime = null;
+
+                function easeInOutCubic(t) {
+                    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+                }
+
+                function step(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const elapsed = timestamp - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    window.scrollTo(0, start + distance * easeInOutCubic(progress));
+                    if (progress < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+            });
+        });
+
+        // 3. Logika Efek Fade In pas di-Scroll
         const fadeElements = document.querySelectorAll('.fade-in');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
